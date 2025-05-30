@@ -25,8 +25,9 @@ interface PageParams {
 
 // ✅ Generate metadata for SEO
 export async function generateMetadata({ params }: PageParams) {
-    const { id } = params;
-    const res = await fetch(`${process.env.FAKE_STORE_API}${id}`);
+    const res = await fetch(`${process.env.FAKE_STORE_API}${params.id}`, {
+        cache: "no-store"
+    });
     const data = await res.json();
 
     return {
@@ -38,7 +39,9 @@ export async function generateMetadata({ params }: PageParams) {
 // ✅ Product detail page component
 export default async function ProductDetailPage({ params }: PageParams) {
     const { id } = params;
-    const res = await fetch(`${process.env.FAKE_STORE_API}${id}`);
+    const res = await fetch(`${process.env.FAKE_STORE_API}${id}`, {
+        cache: "no-store"
+    });
     const product: Product = await res.json();
 
     return (

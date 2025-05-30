@@ -14,7 +14,7 @@ const Navbar: React.FC = () => {
                         Products
                     </Link>
                     <Link
-                        href="/cart"
+                        href="#"
                         className="text-gray-700 hover:text-blue-600 relative"
                         aria-label="Cart"
                     >

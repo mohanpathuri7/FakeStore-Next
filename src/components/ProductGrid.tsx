@@ -1,7 +1,8 @@
 import React from 'react';
-import { Product } from '../../types';
 import ProductCard from './ProductCard';
-import Spinner from '../UI/Spinner';
+import Spinner from './UI/Spinner';
+import { Product } from '@/types';
+
 
 interface ProductGridProps {
   products: Product[];
@@ -17,7 +18,7 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products, isLoading, error })
       </div>
     );
   }
-  
+
   if (error) {
     return (
       <div className="min-h-[400px] flex items-center justify-center">
@@ -28,7 +29,7 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products, isLoading, error })
       </div>
     );
   }
-  
+
   if (products.length === 0) {
     return (
       <div className="min-h-[400px] flex items-center justify-center">
@@ -39,7 +40,7 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products, isLoading, error })
       </div>
     );
   }
-  
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
       {products.map((product) => (

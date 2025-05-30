@@ -106,9 +106,7 @@ export default async function HomePage() {
                   </svg>
                 ))}
               </div>
-              <p className="text-gray-600 mb-4">
-                "I'm amazed by the quality of the products I received. The customer service was excellent too!"
-              </p>
+              <p className="text-gray-600 mb-4">{"I'm amazed by the quality of the products I received. The customer service was excellent too!"}</p>
               <div className="font-medium">Sarah J.</div>
             </div>
 
@@ -120,9 +118,7 @@ export default async function HomePage() {
                   </svg>
                 ))}
               </div>
-              <p className="text-gray-600 mb-4">
-                "Fast shipping and the products look exactly like the pictures. I'll definitely be shopping here again."
-              </p>
+              <p className="text-gray-600 mb-4">{"Fast shipping and the products look exactly like the pictures. I'll definitely be shopping here again."}</p>
               <div className="font-medium">Michael R.</div>
             </div>
 
@@ -134,9 +130,7 @@ export default async function HomePage() {
                   </svg>
                 ))}
               </div>
-              <p className="text-gray-600 mb-4">
-                "Great prices and excellent selection. The jewelry I bought exceeded my expectations in quality."
-              </p>
+              <p className="text-gray-600 mb-4">{"Great prices and excellent selection. The jewelry I bought exceeded my expectations in quality."}</p>
               <div className="font-medium">Emily T.</div>
             </div>
           </div>
