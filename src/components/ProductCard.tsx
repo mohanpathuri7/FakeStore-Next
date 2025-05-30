@@ -1,11 +1,3 @@
-// import React, { memo } from 'react';
-// import { Link } from 'react-router-dom';
-// import { ShoppingCart } from 'lucide-react';
-// import { Product } from '../../types';
-// import { useCartStore } from '../../store/cartStore';
-// import Rating from '../UI/Rating';
-// import Button from '../UI/Button';
-
 import { memo } from "react";
 import Image from "next/image";
 import Link from "next/link";
