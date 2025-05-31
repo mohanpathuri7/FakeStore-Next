@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { ShoppingCart, Search } from 'lucide-react';
+import { ShoppingCart } from 'lucide-react';
 
 
 const Navbar: React.FC = () => {
