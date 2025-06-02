@@ -22,6 +22,7 @@ async function getProducts(): Promise<{ products: Product[]; error?: string }> {
   try {
     await DBConnection();
     const rawProducts = await ProductModel.find().lean();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const products = rawProducts.map((product: any) => ({
       id: product._id.toString(),
       title: product.title,
@@ -34,7 +35,6 @@ async function getProducts(): Promise<{ products: Product[]; error?: string }> {
     return { products };
   } catch (error) {
     console.error('Error fetching products:', error);
-
     return { products: [], error: 'Failed to load products' };
   }
 }

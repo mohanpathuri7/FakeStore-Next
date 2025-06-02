@@ -7,7 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 interface Product {
-    id: number;
+    id: string;
     title: string;
     price: number;
     image: string;
@@ -18,6 +18,7 @@ interface Product {
         count: number;
     };
 }
+
 // Define type for route parameters
 interface PageParams {
     params: {
@@ -25,30 +26,43 @@ interface PageParams {
     };
 }
 
-// ✅ Generate metadata for SEO
-export async function generateMetadata({ params }: PageParams) {
-    const { product, error } = await getProductById(params.id);
 
-    if (error || !product) {
-        return {
-            title: "Product Not Found",
-            description: "The requested product could not be found.",
-        };
-    }
-    return {
-        title: product.title,
-        description: product.description,
-    };
-}
 
 
 export async function getProductById(id: string): Promise<{ product: Product | null; error?: string }> {
     try {
         await DBConnection();
-        const product = await ProductModel.findById(id).lean();
-        if (!product) {
+
+        // Assert productDoc is a single document or null
+        const productDoc = (await ProductModel.findById(id).lean()) as
+            | {
+                _id: number;
+                title: string;
+                price: number;
+                image: string;
+                category: string;
+                description: string;
+                rating: {
+                    rate: number;
+                    count: number;
+                };
+            }
+            | null;
+
+        if (!productDoc) {
             return { product: null, error: "Product not found" };
         }
+
+        const product: Product = {
+            id: productDoc._id.toString(),
+            title: productDoc.title,
+            price: productDoc.price,
+            image: productDoc.image,
+            category: productDoc.category,
+            description: productDoc.description,
+            rating: productDoc.rating,
+        };
+
         return { product };
     } catch (error) {
         console.error("Error fetching product:", error);
@@ -57,9 +71,28 @@ export async function getProductById(id: string): Promise<{ product: Product | n
 }
 
 
+
+
+// ✅ Generate metadata for SEO
+export async function generateMetadata({ params }: PageParams) {
+    const { id } = await params;
+    const { product, error } = await getProductById(id);
+    if (error || !product) {
+        return {
+            title: "Product Not Found",
+            description: "The requested product could not be found.",
+        };
+    }
+
+    return {
+        title: product.title,
+        description: product.description,
+    };
+}
+
 // ✅ Product detail page component
 export default async function ProductDetailPage({ params }: PageParams) {
-    const { id } = params;
+    const { id } = await params;
     const { product, error } = await getProductById(id);
 
     if (error || !product) {
