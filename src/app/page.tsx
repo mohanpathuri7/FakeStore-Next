@@ -34,6 +34,7 @@ async function getProducts(): Promise<{ products: Product[]; error?: string }> {
     return { products };
   } catch (error) {
     console.error('Error fetching products:', error);
+
     return { products: [], error: 'Failed to load products' };
   }
 }
