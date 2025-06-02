@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useMemo } from "react";
-import ProductCard from '@/components/ProductCard';
+import ProductCard from '@/app/components/ProductCard';
 import { Search, SlidersHorizontal, X } from 'lucide-react';
 import CategoryFilter from './CategoryFilter';
 
@@ -40,7 +40,10 @@ const ProductClient: React.FC<ProductClientProps> = ({ products }) => {
             const matchesCategory = selectedCategory ? product.category === selectedCategory : true;
             return matchesSearch && matchesCategory;
         });
+
     }, [products, searchQuery, selectedCategory]);
+
+    console.log(filteredProducts)
 
     return (
         <>

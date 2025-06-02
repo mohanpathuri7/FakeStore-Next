@@ -1,5 +1,7 @@
-import Button from "@/components/UI/Button";
-import Rating from "@/components/UI/Rating";
+import Button from "@/app/components/UI/Button";
+import Rating from "@/app/components/UI/Rating";
+import { DBConnection } from "@/app/uilts/config/db";
+import ProductModel from "@/app/uilts/models/products";
 import { ArrowLeft, RotateCcw, Shield, ShoppingCart, Truck } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -25,24 +27,53 @@ interface PageParams {
 
 // ✅ Generate metadata for SEO
 export async function generateMetadata({ params }: PageParams) {
-    const res = await fetch(`${process.env.FAKE_STORE_API}${params.id}`, {
-        cache: "no-store"
-    });
-    const data = await res.json();
+    const { product, error } = await getProductById(params.id);
 
+    if (error || !product) {
+        return {
+            title: "Product Not Found",
+            description: "The requested product could not be found.",
+        };
+    }
     return {
-        title: data.title,
-        description: data.description,
+        title: product.title,
+        description: product.description,
     };
 }
+
+
+export async function getProductById(id: string): Promise<{ product: Product | null; error?: string }> {
+    try {
+        await DBConnection();
+        const product = await ProductModel.findById(id).lean();
+        if (!product) {
+            return { product: null, error: "Product not found" };
+        }
+        return { product };
+    } catch (error) {
+        console.error("Error fetching product:", error);
+        return { product: null, error: "Failed to load product" };
+    }
+}
+
 
 // ✅ Product detail page component
 export default async function ProductDetailPage({ params }: PageParams) {
     const { id } = params;
-    const res = await fetch(`${process.env.FAKE_STORE_API}${id}`, {
-        cache: "no-store"
-    });
-    const product: Product = await res.json();
+    const { product, error } = await getProductById(id);
+
+    if (error || !product) {
+        return (
+            <section className="container mx-auto px-4 py-8">
+                <p className="text-red-600 text-center">Failed to load product: {error}</p>
+                <div className="text-center mt-4">
+                    <Link href="/products" className="text-blue-600 hover:text-blue-800">
+                        Back to Products
+                    </Link>
+                </div>
+            </section>
+        );
+    }
 
     return (
         <section>
@@ -58,7 +89,7 @@ export default async function ProductDetailPage({ params }: PageParams) {
                     {/* Product Image */}
                     <div className="bg-white rounded-lg p-8 flex items-center justify-center">
                         <Image
-                            src={product.image}
+                            src={product.image[0]}
                             alt={product.title}
                             width={500}
                             height={500}

@@ -12,20 +12,13 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = memo(({ product }) => {
-    // const { addToCart } = useCartStore();
-
-    // const handleAddToCart = (e: React.MouseEvent) => {
-    //     e.preventDefault();
-    //     e.stopPropagation();
-    //     addToCart(product);
-    // };
-
     return (
         <div className="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:shadow-lg hover:-translate-y-1">
             <Link href={`/products/${product.id}`} className="block">
+
                 <div className="relative pt-[100%]">
                     <Image
-                        src={product.image}
+                        src={product.image[0]}
                         alt={product.title}
                         loading="lazy"
                         width={150}

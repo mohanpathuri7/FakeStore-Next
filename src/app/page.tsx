@@ -1,8 +1,9 @@
-import ProductCard from "@/components/ProductCard";
-import Button from "@/components/UI/Button";
+import ProductCard from "@/app/components/ProductCard";
+import Button from "@/app/components/UI/Button";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
-
+import { DBConnection } from "./uilts/config/db";
+import ProductModel from "./uilts/models/products";
 
 interface Product {
   id: number;
@@ -17,22 +18,41 @@ interface Product {
   };
 }
 
-
-async function getProducts(): Promise<Product[]> {
-  const res = await fetch("https://fakestoreapi.com/products", { next: { revalidate: 60 } });
-  if (!res.ok) throw new Error("Failed to fetch products");
-  return res.json();
+async function getProducts(): Promise<{ products: Product[]; error?: string }> {
+  try {
+    await DBConnection();
+    const rawProducts = await ProductModel.find().lean();
+    const products = rawProducts.map((product: any) => ({
+      id: product._id.toString(),
+      title: product.title,
+      description: product.description,
+      category: product.category,
+      price: product.price,
+      rating: product.rating,
+      image: product.image,
+    }));
+    return { products };
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    return { products: [], error: 'Failed to load products' };
+  }
 }
 
-async function getCategories() {
-  const res = await fetch("https://fakestoreapi.com/products/categories", { next: { revalidate: 60 } });
-  if (!res.ok) throw new Error("Failed to fetch categories");
-  return res.json();
+async function getCategories(): Promise<{ categories: string[]; error?: string }> {
+  try {
+    await DBConnection();
+    const products = await ProductModel.find();
+    const categories = [...new Set(products.map(product => product.category))];
+    return { categories };
+  } catch (err) {
+    console.error('Error fetching categories:', err);
+    return { categories: [], error: 'Failed to load categories' };
+  }
 }
 
 export default async function HomePage() {
-  const [products, categories] = await Promise.all([getProducts(), getCategories()]);
-
+  const { products, error: productsError } = await getProducts();
+  const { categories, error: categoriesError } = await getCategories();
 
   return (
     <>
@@ -59,6 +79,7 @@ export default async function HomePage() {
             </Link>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {productsError && <p className="text-red-500">{productsError}</p>}
             {products.slice(0, 8).map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
@@ -70,10 +91,11 @@ export default async function HomePage() {
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-gray-800 mb-10 text-center">Shop by Category</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-            {categories?.map((category: string) => (
+            {categoriesError && <p className="text-red-500">{categoriesError}</p>}
+            {categories.map((category: string) => (
               <Link
                 key={category}
-                href={`/products?category=${category}`}
+                href={`/products?category=${encodeURIComponent(category)}`}
                 className="bg-white rounded-lg shadow-md hover:shadow-lg hover:-translate-y-1"
               >
                 <div className="p-8 text-center">
@@ -90,6 +112,7 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
       {/* Testimonials Section */}
       <section className="py-16">
         <div className="container mx-auto px-4">
