@@ -22,14 +22,16 @@ const productSchema = new Schema<IProduct>(
             rate: { type: Number },
             count: { type: Number },
         },
-        image: {
-            type: String,
-            validate: {
-                validator: (url: string) =>
-                    /^https?:\/\/.+\.(jpg|jpeg|png|webp)$/.test(url),
-                message: 'Invalid image URL',
+        image: [
+            {
+                type: String,
+                validate: {
+                    validator: (url: string) =>
+                        /^https?:\/\/.+\.(jpg|jpeg|png|webp)$/.test(url),
+                    message: 'Invalid image URL',
+                },
             },
-        },
+        ],
     },
     {
         timestamps: true,
@@ -41,6 +43,7 @@ const productSchema = new Schema<IProduct>(
         },
     }
 );
+
 
 const ProductModel =
     mongoose.models.Product || mongoose.model<IProduct>('Product', productSchema);

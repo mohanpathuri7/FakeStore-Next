@@ -5,6 +5,7 @@ import Link from "next/link";
 import { DBConnection } from "./uilts/config/db";
 import ProductModel from "./uilts/models/products";
 
+export const revalidate = 60;
 interface Product {
   id: number;
   title: string;

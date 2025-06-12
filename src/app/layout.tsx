@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/app/components/Layout/Navbar";
 import Footer from "@/app/components/Layout/Footer";
+import Script from 'next/script';
+import { gtmScript, GTM_ID } from './lib/gtm';
 
 
 
@@ -20,7 +22,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        {/* Inject GTM script into <head> after hydration */}
+        <Script id="gtm-script" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: gtmScript() }} />
+      </head>
       <body className={`${inter.className}`}>
+        {/* GTM <noscript> fallback for non-JS support */}
+        <noscript>
+          <iframe
+            src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
+            height="0"
+            width="0"
+            style={{ display: 'none', visibility: 'hidden' }}
+          />
+        </noscript>
         <div className="flex flex-col min-h-screen">
           <Navbar />
           <main className="flex-grow">
