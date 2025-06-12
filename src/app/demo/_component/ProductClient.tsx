@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import ProductCard from "@/app/components/ProductCard";
 
 interface Product {
-    id: string;
+    id: number;
     title: string;
     price: number;
     image: string;

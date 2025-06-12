@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { DBConnection } from "@/app/uilts/config/db";
 import ProductModel from "@/app/uilts/models/products";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 await DBConnection();
 

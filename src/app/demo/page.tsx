@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Metadata } from "next";
 import { DBConnection } from "../uilts/config/db";
 import ProductModel from "../uilts/models/products";
@@ -9,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 interface Product {
-    id: string;
+    id: number;
     title: string;
     price: number;
     image: string;
