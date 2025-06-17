@@ -8,6 +8,7 @@ import Button from '@/app/components/UI/Button';
 import CartItem from '@/app/components/cartltem';
 import CartSummary from '@/app/components/cartsummary';
 
+
 const CartPageClient = () => {
     const { items, totalItems, clearCart } = useCartStore();
 
@@ -20,7 +21,7 @@ const CartPageClient = () => {
                     </div>
                     <h1 className="text-3xl font-bold text-gray-800 mb-4">Your Cart is Empty</h1>
                     <p className="text-gray-600 mb-8">
-                        Looks like you haven't added any products to your cart yet.
+                        Looks like you haven&lsquo;t added any products to your cart yet.
                     </p>
                     <Link href="/products">
                         <Button size="lg">Continue Shopping</Button>
