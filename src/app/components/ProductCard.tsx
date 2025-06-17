@@ -1,3 +1,4 @@
+'use client'
 import { memo } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -5,6 +6,7 @@ import Button from "./UI/Button";
 import Rating from "./UI/Rating";
 import { ShoppingCart } from "lucide-react";
 import { Product } from "@/types";
+import { useCartStore } from "../store/cartStore";
 
 
 interface ProductCardProps {
@@ -12,6 +14,12 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = memo(({ product }) => {
+    const { addToCart } = useCartStore();
+    const handleAddToCart = (e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        addToCart(product);
+    };
     return (
         <div className="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:shadow-lg hover:-translate-y-1">
             <Link href={`/products/${product.id}`} className="block">
@@ -53,7 +61,7 @@ const ProductCard: React.FC<ProductCardProps> = memo(({ product }) => {
 
                         <Button
                             size="sm"
-                            // onClick={handleAddToCart}
+                            onClick={handleAddToCart}
                             className="group"
                         >
                             <ShoppingCart className="w-4 h-4 mr-1 group-hover:animate-bounce" />

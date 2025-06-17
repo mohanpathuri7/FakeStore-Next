@@ -43,7 +43,7 @@ const ProductClient: React.FC<ProductClientProps> = ({ products }) => {
 
     }, [products, searchQuery, selectedCategory]);
 
-    console.log(filteredProducts)
+
 
     return (
         <>
