@@ -23,8 +23,10 @@ interface Product {
 }
 
 export default function ProductDetailClient({ product }: { product: Product }) {
-    const { addToCart } = useCartStore();
+    const { addToCart, items } = useCartStore();
     const [quantity, setQuantity] = useState(1);
+
+    const cartItem = items.find((item) => item.product.id === product.id);
 
     return (
         <>
@@ -53,6 +55,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
                             <span className="inline-block text-sm font-medium bg-gray-100 text-gray-800 px-3 py-1 rounded-full mb-4">
                                 {product.category}
                             </span>
+                            {cartItem?.quantity && <span className="inline-block text-sm font-medium bg-gray-100 text-gray-800 px-3 py-1 rounded-full mb-4 ml-1">{cartItem?.quantity}</span>}
 
                             <h1 className="text-2xl lg:text-3xl font-bold text-gray-800 mb-4">
                                 {product.title}
@@ -91,6 +94,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
                                         onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value, 10) || 1))}
                                         className="w-16 px-3 py-2 border-t border-b border-gray-300  bg-gray-50 text-center focus:outline-none"
                                     />
+
                                     <button onClick={() => setQuantity(quantity + 1)}
                                         className="px-3 py-2 border border-gray-300 rounded-r-md bg-gray-50 hover:bg-gray-100">
                                         <Plus className="w-6 h-6" />
@@ -138,6 +142,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
                     </div>
                 </div>
             </section>
+
         </>
     );
 }

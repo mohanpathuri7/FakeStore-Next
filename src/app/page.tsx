@@ -4,6 +4,8 @@ import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { DBConnection } from "./uilts/config/db";
 import ProductModel from "./uilts/models/products";
+import { Metadata } from "next";
+
 
 export const revalidate = 60;
 interface Product {
@@ -18,6 +20,12 @@ interface Product {
     count: number;
   };
 }
+
+
+export const metadata: Metadata = {
+  title: "Home",
+  description: "Products page description",
+};
 
 async function getProducts(): Promise<{ products: Product[]; error?: string }> {
   try {

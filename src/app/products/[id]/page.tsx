@@ -6,7 +6,8 @@ import { Document } from "mongoose";
 
 // Define the Product interface used in the UI
 interface Product {
-    id: number;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    id: any;
     title: string;
     price: number;
     image: string;
@@ -20,7 +21,7 @@ interface Product {
 
 // Define the Product document interface returned by Mongoose
 interface ProductDoc extends Document {
-    _id: number;
+    _id: string;
     title: string;
     price: number;
     image: string;
@@ -74,7 +75,7 @@ export default async function ProductDetailPage({ params }: { params: { id: stri
     }
 
     const product: Product = {
-        id: productDoc._id,
+        id: productDoc._id.toString(),
         title: productDoc.title,
         price: productDoc.price,
         image: productDoc.image,
