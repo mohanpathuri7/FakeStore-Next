@@ -1,8 +1,11 @@
+import Link from 'next/link'
 import { useCartStore } from "../store/cartStore";
-import Button from "./UI/Button";
+import { SignedIn, SignedOut, useUser } from "@clerk/nextjs";
 
 const CartSummary: React.FC = () => {
     const { totalItems, totalPrice } = useCartStore();
+    const { isSignedIn } = useUser();
+
 
     // Calculate shipping based on total
     const shipping = totalPrice > 100 ? 0 : 10;
@@ -12,6 +15,7 @@ const CartSummary: React.FC = () => {
 
     // Calculate final total
     const orderTotal = totalPrice + shipping + tax;
+    const formattedOrderTotal = orderTotal.toFixed(2);
 
     return (
         <div className="bg-gray-50 rounded-lg p-6">
@@ -41,9 +45,10 @@ const CartSummary: React.FC = () => {
             <div className="flex justify-between py-4 border-b border-gray-200">
                 <span className="text-lg font-bold text-gray-800">Order Total</span>
                 <span className="text-lg font-bold text-gray-800">
-                    ${orderTotal.toFixed(2)}
+                    ${formattedOrderTotal}
                 </span>
             </div>
+
 
             {shipping > 0 && (
                 <p className="text-sm text-green-600 mt-3">
@@ -51,16 +56,16 @@ const CartSummary: React.FC = () => {
                 </p>
             )}
 
-            <Button
-                variant="primary"
-                size="lg"
-                fullWidth
-                className="mt-6"
-                onClick={() => alert('Checkout functionality would go here!')}
-            >
-                Proceed to Checkout
-            </Button>
-
+            <SignedOut>
+                <Link href="/sign-in" className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded mt-6 block text-center">
+                    Sign in to checkout
+                </Link>
+            </SignedOut>
+            <SignedIn>
+                <Link href="/checkout" className={`bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded mt-4 block text-center ${!isSignedIn ? 'opacity-50 cursor-not-allowed' : ''}`}>
+                    Proceed to Payment
+                </Link>
+            </SignedIn>
             <p className="text-xs text-gray-500 mt-4 text-center">
                 Free shipping for orders over $100. Returns accepted within 30 days.
             </p>

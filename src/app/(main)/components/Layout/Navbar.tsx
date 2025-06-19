@@ -1,7 +1,8 @@
 'use client'
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import Link from 'next/link'
 import { ShoppingCart } from 'lucide-react';
-import { useCartStore } from '@/app/store/cartStore';
+import { useCartStore } from '@/app/(main)/store/cartStore';
 
 
 const Navbar: React.FC = () => {
@@ -28,6 +29,12 @@ const Navbar: React.FC = () => {
                             </span>
                         )}
                     </Link>
+                    <SignedIn>
+                        <UserButton />
+                    </SignedIn>
+                    <SignedOut>
+                        <SignInButton />
+                    </SignedOut>
                 </nav>
             </div>
         </header>

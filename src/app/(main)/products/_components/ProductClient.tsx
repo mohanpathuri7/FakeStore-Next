@@ -1,9 +1,9 @@
 'use client';
 
 import { useState, useMemo } from "react";
-import ProductCard from '@/app/components/ProductCard';
 import { Search, SlidersHorizontal, X } from 'lucide-react';
 import CategoryFilter from './CategoryFilter';
+import ProductCard from "../../components/ProductCard";
 
 interface Product {
     id: number;

@@ -1,10 +1,11 @@
-import ProductCard from "@/app/components/ProductCard";
-import Button from "@/app/components/UI/Button";
+
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { DBConnection } from "./uilts/config/db";
 import ProductModel from "./uilts/models/products";
 import { Metadata } from "next";
+import Button from "./(main)/components/UI/Button";
+import ProductCard from "./(main)/components/ProductCard";
 
 
 export const revalidate = 60;

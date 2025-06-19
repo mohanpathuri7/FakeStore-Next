@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import ProductClient from "./_components/ProductClient";
-import { DBConnection } from "../uilts/config/db";
-import ProductModel from "../uilts/models/products";
+import { DBConnection } from "../../uilts/config/db";
+import ProductModel from "../../uilts/models/products";
 
 export const metadata: Metadata = {
     title: "Products",

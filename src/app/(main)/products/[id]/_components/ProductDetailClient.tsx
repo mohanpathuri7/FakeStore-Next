@@ -1,12 +1,12 @@
 // app/products/[id]/ProductDetailClient.tsx
 'use client';
 import { useState } from "react";
-import { useCartStore } from "@/app/store/cartStore";
-import Button from "@/app/components/UI/Button";
-import Rating from "@/app/components/UI/Rating";
+import { useCartStore } from "@/app/(main)/store/cartStore";
 import { ArrowLeft, Minus, Plus, RotateCcw, Shield, ShoppingCart, Truck } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import Rating from "@/app/(main)/components/UI/Rating";
+import Button from "@/app/(main)/components/UI/Button";
 
 
 interface Product {

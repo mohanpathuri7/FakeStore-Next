@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect, useState } from "react";
-import ProductCard from "@/app/components/ProductCard";
+import ProductCard from "../../components/ProductCard";
+
 
 interface Product {
     id: number;
@@ -43,6 +44,7 @@ const ProductClient: React.FC<Props> = ({ initialProducts }) => {
         };
 
         fetchRemaining();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

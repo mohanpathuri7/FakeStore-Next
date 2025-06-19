@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Metadata } from "next";
-import { DBConnection } from "../uilts/config/db";
-import ProductModel from "../uilts/models/products";
+import { DBConnection } from "../../uilts/config/db";
+import ProductModel from "../../uilts/models/products";
 import ProductClient from "./_component/ProductClient";
 
 export const metadata: Metadata = {
