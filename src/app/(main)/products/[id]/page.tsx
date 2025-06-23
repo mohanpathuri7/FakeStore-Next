@@ -1,13 +1,12 @@
-import { DBConnection } from "@/app/uilts/config/db";
-import ProductModel from "@/app/uilts/models/products";
-import ProductDetailClient from "./_components/ProductDetailClient";
-import { Metadata } from "next";
-import { Document } from "mongoose";
+import { DBConnection } from '@/app/uilts/config/db';
+import ProductDetailClient from './_components/ProductDetailClient';
+import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+import ProductModel from '@/app/uilts/models/products';
 
-// Define the Product interface used in the UI
+// UI type
 interface Product {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    id: any;
+    id: number; // ✅ changed from number to string
     title: string;
     price: number;
     image: string;
@@ -19,12 +18,11 @@ interface Product {
     };
 }
 
-// Define the Product document interface returned by Mongoose
-interface ProductDoc extends Document {
-    _id: string;
+interface ProductDoc {
+    _id: number;
     title: string;
     price: number;
-    image: string;
+    image: string | string[];
     category: string;
     description: string;
     rating: {
@@ -33,19 +31,27 @@ interface ProductDoc extends Document {
     };
 }
 
-// ✅ SEO metadata
-export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
+export async function generateMetadata({
+    params,
+}: {
+    params: { id: string };
+}): Promise<Metadata> {
     await DBConnection();
+
+    if (!params?.id) return { title: 'Product Not Found' };
+
     const productDoc = await ProductModel.findById(params.id).lean<ProductDoc>();
 
     if (!productDoc) {
         return {
-            title: "Product Not Found",
-            description: "The requested product does not exist.",
+            title: 'Product Not Found',
+            description: 'The requested product does not exist.',
         };
     }
 
-    const imageUrl = Array.isArray(productDoc.image) ? productDoc.image[0] : productDoc.image;
+    const imageUrl = Array.isArray(productDoc.image)
+        ? productDoc.image[0]
+        : productDoc.image;
 
     return {
         title: productDoc.title,
@@ -56,29 +62,39 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
             images: [imageUrl],
         },
         twitter: {
-            card: "summary_large_image",
+            card: 'summary_large_image',
             title: productDoc.title,
             description: productDoc.description,
             images: [imageUrl],
         },
-        keywords: [productDoc.category, productDoc.title, "Buy online", "Ecommerce", "Product"],
+        keywords: [
+            productDoc.category,
+            productDoc.title,
+            'Buy online',
+            'Ecommerce',
+            'Product',
+        ],
     };
 }
 
-// ✅ Product detail page
-export default async function ProductDetailPage({ params }: { params: { id: string } }) {
+export default async function ProductDetailPage({
+    params,
+}: {
+    params: { id: string };
+}) {
     await DBConnection();
+
+    if (!params?.id) return notFound();
+
     const productDoc = await ProductModel.findById(params.id).lean<ProductDoc>();
 
-    if (!productDoc) {
-        return <p className="text-center text-red-600">Product not found</p>;
-    }
+    if (!productDoc) return notFound();
 
     const product: Product = {
-        id: productDoc._id.toString(),
+        id: productDoc._id, // ✅ now matches id: string
         title: productDoc.title,
         price: productDoc.price,
-        image: productDoc.image,
+        image: Array.isArray(productDoc.image) ? productDoc.image[0] : productDoc.image,
         category: productDoc.category,
         description: productDoc.description,
         rating: productDoc.rating,

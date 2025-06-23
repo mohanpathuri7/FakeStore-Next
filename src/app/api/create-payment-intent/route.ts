@@ -1,39 +1,42 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
-    // @ts-expect-error – override if the version is incompatible
-    apiVersion: "2023-10-16", // Replace with your API version if different
+    apiVersion: "2025-05-28.basil", // ✅ updated to match current Stripe type
 });
 
 export async function POST(request: NextRequest) {
     try {
-        const { amount } = await request.json();
+        const body = await request.json();
+        const { amount, email, cartItems } = body;
 
         if (!amount || typeof amount !== "number") {
-            return NextResponse.json(
-                { error: "Invalid or missing amount" },
-                { status: 400 }
-            );
+            return NextResponse.json({ error: "Invalid or missing amount" }, { status: 400 });
         }
+
+        if (!email) {
+            return NextResponse.json({ error: "Missing email" }, { status: 400 });
+        }
+
+        // Reuse or create customer
+        const existingCustomers = await stripe.customers.list({ email, limit: 1 });
+        const customer = existingCustomers.data[0] || await stripe.customers.create({ email });
 
         const paymentIntent = await stripe.paymentIntents.create({
             amount,
             currency: "usd",
-            automatic_payment_methods: {
-                enabled: true,
+            customer: customer.id,
+            automatic_payment_methods: { enabled: true },
+            metadata: {
+                cart: JSON.stringify(cartItems ?? []),
             },
         });
 
-        return NextResponse.json({
-            clientSecret: paymentIntent.client_secret,
-        });
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        return NextResponse.json({ clientSecret: paymentIntent.client_secret });
+
     } catch (error: any) {
-        console.error("Stripe error:", error);
-        return NextResponse.json(
-            { error: `Internal Server Error: ${error.message}` },
-            { status: 500 }
-        );
+        console.error("Stripe Error:", error.message);
+        return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }

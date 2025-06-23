@@ -17,6 +17,13 @@ const Navbar: React.FC = () => {
                     <Link href="/products" className="text-gray-700 hover:text-blue-600 font-medium">
                         Products
                     </Link>
+                    <SignedIn>
+                        <Link href="/order" className="text-gray-700 hover:text-blue-600 font-medium">
+                            Orders
+                        </Link>
+                    </SignedIn>
+
+
                     <Link
                         href="/cart"
                         className="text-gray-700 hover:text-blue-600 relative"

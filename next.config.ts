@@ -14,7 +14,9 @@ const nextConfig: NextConfig = {
     imageSizes: [16, 32, 48, 64, 96, 128],
     formats: ["image/avif", "image/webp"],
     unoptimized: false,
+    domains: ['fakestoreapi.com']
   },
+
 
 
   /* config options here */
