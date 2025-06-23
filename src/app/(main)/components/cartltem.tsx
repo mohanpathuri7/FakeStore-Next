@@ -35,20 +35,18 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
 
     return (
         <div className="flex flex-col sm:flex-row items-stretch sm:items-start py-6 border-b">
-            <div className="flex-shrink-0 w-full sm:w-13 h-13 mb-4 sm:mb-0">
+            <div className="relative w-full sm:w-24 h-40 sm:h-28 mb-4 sm:mb-0 flex-shrink-0">
                 <Link href={`/products/${product.id}`}>
                     <Image
-                        src={product.image[0]}
+                        src={Array.isArray(product.image) ? product.image[0] : product.image}
                         alt={product.title}
-                        width={20}
-                        height={20}
-                        className="w-full h-full object-contain"
-                        layout="responsive"
+                        fill
+                        className="object-contain"
+                        sizes="(max-width: 640px) 100vw, 96px" // responsive hint
                     />
-
-
                 </Link>
             </div>
+
 
             <div className="flex-grow sm:ml-6 max-w-115 mr-5">
                 <Link href={`/products/${product.id}`} className="text-lg font-medium text-gray-800 hover:text-blue-600">

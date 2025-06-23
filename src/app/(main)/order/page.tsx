@@ -2,6 +2,7 @@
 import { DBConnection } from '@/app/uilts/config/db';
 import OrderModel from '@/app/uilts/models/Order';
 import { auth, currentUser } from "@clerk/nextjs/server";
+import { Metadata } from 'next';
 import Image from 'next/image';
 
 interface OrderItem {
@@ -17,6 +18,11 @@ interface OrderDoc {
     items: OrderItem[];
     email: string;
 }
+
+export const metadata: Metadata = ({
+    title: "Your Orders",
+    description: "View and manage your orders",
+});
 
 export default async function OrdersPage() {
     const { userId } = await auth();
