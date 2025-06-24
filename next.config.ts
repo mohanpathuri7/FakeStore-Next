@@ -14,12 +14,22 @@ const nextConfig: NextConfig = {
     imageSizes: [16, 32, 48, 64, 96, 128],
     formats: ["image/avif", "image/webp"],
     unoptimized: false,
-    domains: ['fakestoreapi.com']
+    domains: ["fakestoreapi.com"],
   },
 
-
-
-  /* config options here */
+  async headers() {
+    return [
+      {
+        source: "/(.*)", // Apply to all routes
+        headers: [
+          {
+            key: "X-Robots-Tag",
+            value: "index, follow", // ✅ allow search engines
+          },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;
