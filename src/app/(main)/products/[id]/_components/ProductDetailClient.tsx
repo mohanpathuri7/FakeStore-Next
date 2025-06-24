@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // app/products/[id]/ProductDetailClient.tsx
 'use client';
 import { useState } from "react";
@@ -10,7 +11,7 @@ import Button from "@/app/(main)/components/UI/Button";
 
 
 interface Product {
-    id: number;
+    id: any;
     title: string;
     price: number;
     image: string;
@@ -42,7 +43,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
                         <div className="bg-white rounded-lg p-8 flex items-center justify-center">
                             <Image
-                                src={product.image[0]}
+                                src={Array.isArray(product.image) ? product.image[0] : product.image}
                                 alt={product.title}
                                 width={500}
                                 height={500}
