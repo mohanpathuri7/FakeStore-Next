@@ -78,7 +78,7 @@ const PaymentSuccess = () => {
     }
 
     return (
-        <main className="max-w-4xl mx-auto p-8 text-white text-center border rounded-md bg-gradient-to-tr from-blue-500 to-purple-600 shadow-lg mt-10">
+        <main className="max-w-4xl mx-auto p-8 text-white text-center border rounded-md bg-gradient-to-tr from-blue-500 to-purple-600 shadow-lg  sm:my-20">
             <h1 className="text-4xl font-bold mb-4">🎉 Thank you for your payment</h1>
             <p className="text-xl mb-2">Your payment was successful!</p>
             <div className="bg-white text-purple-600 font-bold text-3xl rounded p-3 inline-block mb-6">
