@@ -68,7 +68,7 @@ const PaymentSuccess = () => {
         const timer = setTimeout(() => {
             clearCart();
             router.push('/');
-        }, 10000);
+        }, 5000);
 
         return () => clearTimeout(timer); // ✅ Cleanup
     }, [amount, clearCart, router]);

@@ -27,6 +27,7 @@ export default function RootLayout({
         <head>
           {/* Inject GTM script into <head> after hydration */}
           <Script id="gtm-script" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: gtmScript() }} />
+          <meta name="robots" content="index, follow" />
         </head>
         <body className={`${inter.className}`}>
           {/* GTM <noscript> fallback for non-JS support */}
